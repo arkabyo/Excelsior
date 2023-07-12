@@ -1,4 +1,4 @@
-# Student Data Comparison and Verification / Duplicate Finder
+# Student Data Comparison and Verification
 
 This program automates the comparison of student data based on their ID between the Master File and the Pending Verification file. It is developed using .NET Framework 6.0 and Visual Studio 2019 (version 17.6.4).
 
@@ -11,7 +11,7 @@ The "Compare and Export" feature compares student data from the Master File and 
 The "Filtered Export" feature allows you to filter out rows that are not found in either the Master File or the Pending Verification file. It creates a new file with only the filtered rows, making it easier to focus on the students that require verification. The filtered export includes the same additional columns as the "Compare and Export" feature.
 
 ### Duplicate Row Finder
-This program can also function as a duplicate row finder by utilizing the Student ID as the key. It compares the rows in the Master File and the Pending Verification file and identifies any duplicate entries based on matching Student IDs.
+This program can also be modified to function as a duplicate row finder within the current work file by using the Student ID as the key. It compares the rows from the Master File and the Pending Verification file to identify any duplicate entries based on matching Student IDs.
 
 ## System Requirements
 - .NET Framework 6.0 or higher
@@ -32,4 +32,3 @@ Contributions to this project are welcome. Feel free to open issues and submit p
 If you have any questions or need further assistance, please don't hesitate to reach out.
 
 Enjoy using the Student Data Comparison and Verification program!
- 
