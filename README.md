@@ -8,7 +8,7 @@ This program automates the comparison of student data based on their ID between 
 The "Compare and Export" feature compares student data from the Master File and the Pending Verification file based on their ID. It creates a new file that indicates whether each student is found in the Master File, the Pending Verification file, or if they require new verification.
 
 ### Filtered Export
-The "Filtered Export" feature allows you to filter out rows that are not found in either the Master File or the Pending Verification file. It creates a new file with only the filtered rows, making it easier to focus on the students that require verification.  Additionally, it adds additional columns to the work file with relevant information. 
+The "Filtered Export" feature allows you to filter out rows that are not found in either the Master File or the Pending Verification file. It creates a new file with only the filtered rows, making it easier to focus on the students that require verification. 
 
 ### Duplicate Row Finder
 This program can also be modified to function as a duplicate row finder within the current work file by using the Student ID as the key. It compares the rows from the Master File and the Pending Verification file to identify any duplicate entries based on matching Student IDs.
