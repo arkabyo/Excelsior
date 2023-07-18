@@ -14,48 +14,52 @@ namespace Excelsior
             InitializeComponent();
         }
 
+        // Button click event handler for selecting Source File 1
         private void sourceFile1BrowseButton_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*"; // Set the desired file filter
-                openFileDialog.Title = "Select Source File 1"; // Set the dialog title
+                openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*";
+                openFileDialog.Title = "Select Source File 1";
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    sourceFile1TextBox.Text = openFileDialog.FileName; // Set the selected file path to the TextBox
+                    sourceFile1TextBox.Text = openFileDialog.FileName;
                 }
             }
         }
 
+        // Button click event handler for selecting Source File 2
         private void sourceFile2BrowseButton_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*"; // Set the desired file filter
-                openFileDialog.Title = "Select Source File 2"; // Set the dialog title
+                openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*";
+                openFileDialog.Title = "Select Source File 2";
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    sourceFile2TextBox.Text = openFileDialog.FileName; // Set the selected file path to the TextBox
+                    sourceFile2TextBox.Text = openFileDialog.FileName;
                 }
             }
         }
 
+        // Button click event handler for selecting Work File
         private void workFileBrowseButton_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*"; // Set the desired file filter
-                openFileDialog.Title = "Select Work File"; // Set the dialog title
+                openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*";
+                openFileDialog.Title = "Select Work File";
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    workFileTextBox.Text = openFileDialog.FileName; // Set the selected file path to the TextBox
+                    workFileTextBox.Text = openFileDialog.FileName;
                 }
             }
         }
 
+        // Button click event handler for performing comparison and export
         private void compareAndExportButton_Click(object sender, EventArgs e)
         {
             try
@@ -70,45 +74,28 @@ namespace Excelsior
                 DataTable sourceFile2Data = LoadExcelFile(sourceFile2Path);
                 DataTable workFileData = LoadExcelFile(workFilePath);
 
-                // Add additional columns to the source file DataTables
-                sourceFile1Data.Columns.Add("Assigned To", typeof(string));
-                sourceFile1Data.Columns.Add("College Name", typeof(string));
-                sourceFile2Data.Columns.Add("Assigned To", typeof(string));
-                sourceFile2Data.Columns.Add("College Name", typeof(string));
+                // Add the "Found In" column to the work file if it doesn't exist
+                AddColumnIfNotExists(workFileData, "Found In", typeof(string));
 
-                // Add additional columns to the work file at the appropriate positions
-                workFileData.Columns.Add("Assigned To", typeof(string)).SetOrdinal(workFileData.Columns.IndexOf("Student ID"));
-                workFileData.Columns.Add("College Name", typeof(string)).SetOrdinal(workFileData.Columns.IndexOf("Assigned To") + 1);
-                workFileData.Columns.Add("Break In Terms", typeof(string)).SetOrdinal(workFileData.Columns.IndexOf("INFO-PENDING") + 1);
-                workFileData.Columns.Add("Credit Per Semester 15+", typeof(string)).SetOrdinal(workFileData.Columns.IndexOf("TOTAL CREDITS-EARNED") + 1);
-                workFileData.Columns.Add("Found In", typeof(string));
-
-                // Perform the comparison and update the new columns
+                // Perform the comparison and update the "Found In" column
                 foreach (DataRow row in workFileData.Rows)
                 {
                     // Retrieve the Student ID for comparison
                     string key = row["Student ID"].ToString();
 
-                    // Perform the comparison logic and update the additional columns
+                    // Perform the comparison logic and update the "Found In" column
                     if (ContainsKey(sourceFile1Data, "Student ID", key))
                     {
-                        row["Assigned To"] = sourceFile1Data.Rows[0]["Assigned To"];
-                        row["College Name"] = sourceFile1Data.Rows[0]["College Name"];
                         row["Found In"] = "1. Master File";
                     }
                     else if (ContainsKey(sourceFile2Data, "Student ID", key))
                     {
-                        row["Assigned To"] = sourceFile2Data.Rows[0]["Assigned To"];
-                        row["College Name"] = sourceFile2Data.Rows[0]["College Name"];
                         row["Found In"] = "2. Pending File";
                     }
                     else
                     {
                         row["Found In"] = "0. New Verification";
                     }
-
-                    row["Break In Terms"] = string.Empty;
-                    row["Credit Per Semester 15+"] = string.Empty;
                 }
 
                 // Export the modified work file
@@ -122,6 +109,23 @@ namespace Excelsior
             }
         }
 
+        // Helper method to add a column to a DataTable if it doesn't exist
+        private void AddColumnIfNotExists(DataTable dataTable, string columnName, Type columnType, string insertAfterColumn = null)
+        {
+            if (!dataTable.Columns.Contains(columnName))
+            {
+                if (!string.IsNullOrEmpty(insertAfterColumn) && dataTable.Columns.Contains(insertAfterColumn))
+                {
+                    dataTable.Columns.Add(columnName, columnType).SetOrdinal(dataTable.Columns.IndexOf(insertAfterColumn) + 1);
+                }
+                else
+                {
+                    dataTable.Columns.Add(columnName, columnType);
+                }
+            }
+        }
+
+        // Button click event handler for exporting filtered data
         private void exportFilteredOnlyButton_Click(object sender, EventArgs e)
         {
             try
@@ -136,8 +140,10 @@ namespace Excelsior
                 DataTable sourceFile2Data = LoadExcelFile(sourceFile2Path);
                 DataTable workFileData = LoadExcelFile(workFilePath);
 
-                // Filter the rows not found in both source files
+                // Create a new DataTable to store the filtered data
                 DataTable filteredData = workFileData.Clone();
+
+                // Filter the rows not found in both source files
                 foreach (DataRow row in workFileData.Rows)
                 {
                     string key = row["Student ID"].ToString();
@@ -146,23 +152,6 @@ namespace Excelsior
                     {
                         filteredData.ImportRow(row);
                     }
-                }
-
-                // Add additional columns to the filtered data at the appropriate positions
-                filteredData.Columns.Add("Assigned To", typeof(string)).SetOrdinal(filteredData.Columns.IndexOf("Student ID"));
-                filteredData.Columns.Add("College Name", typeof(string)).SetOrdinal(filteredData.Columns.IndexOf("Assigned To") + 1);
-                filteredData.Columns.Add("Break In Terms", typeof(string)).SetOrdinal(filteredData.Columns.IndexOf("INFO-PENDING") + 1);
-                filteredData.Columns.Add("Credit Per Semester 15+", typeof(string)).SetOrdinal(filteredData.Columns.IndexOf("TOTAL CREDITS-EARNED") + 1);
-                //filteredData.Columns.Add("Found In", typeof(string));
-
-                // Perform the additional column updates (set them to empty values)
-                foreach (DataRow row in filteredData.Rows)
-                {
-                    row["Assigned To"] = string.Empty;
-                    row["College Name"] = string.Empty;
-                    row["Break In Terms"] = string.Empty;
-                    row["Credit Per Semester 15+"] = string.Empty;
-                    //row["Found In"] = string.Empty;
                 }
 
                 // Export the filtered data to a new Excel file
@@ -176,6 +165,7 @@ namespace Excelsior
             }
         }
 
+        // Helper method to load an Excel file into a DataTable
         private DataTable LoadExcelFile(string filePath)
         {
             DataTable dataTable = new DataTable();
@@ -207,11 +197,13 @@ namespace Excelsior
             return dataTable;
         }
 
+        // Helper method to check if a DataTable contains a specific key value
         private bool ContainsKey(DataTable dataTable, string keyColumn, string key)
         {
             return dataTable.AsEnumerable().Any(row => row.Field<string>(keyColumn) == key);
         }
 
+        // Helper method to export a DataTable to an Excel file
         private void ExportToExcel(DataTable dataTable, string workFilePath, string suffix)
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
@@ -253,4 +245,4 @@ namespace Excelsior
     }
 }
 
-//Avijit Roy, July 12, 2023
+// Avijit Roy, July 18, 2023
