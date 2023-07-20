@@ -43,6 +43,8 @@
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             sourceFile3TextBox = new TextBox();
             sourceFile3BrowseButton = new Button();
+            pictureBox1 = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // sourceFile1TextBox
@@ -162,11 +164,23 @@
             sourceFile3BrowseButton.UseVisualStyleBackColor = true;
             sourceFile3BrowseButton.Click += sourceFile3BrowseButton_Click;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(462, 112);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(25, 23);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 12;
+            pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox1_Click;
+            // 
             // excelsiorForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(515, 267);
+            Controls.Add(pictureBox1);
             Controls.Add(sourceFile3BrowseButton);
             Controls.Add(sourceFile3TextBox);
             Controls.Add(exportFilteredOnlyButton);
@@ -183,6 +197,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "excelsiorForm";
             Text = "Excelsior Verification Filter";
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -203,5 +218,6 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private TextBox sourceFile3TextBox;
         private Button sourceFile3BrowseButton;
+        private PictureBox pictureBox1;
     }
 }

@@ -279,6 +279,11 @@ namespace Excelsior
                 }
             }
         }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("CF Query Name: AR_STDNT_ENRL_FRS_ACAD_PROG", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 }
 
