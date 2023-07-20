@@ -41,6 +41,8 @@
             label2 = new Label();
             exportFilteredOnlyButton = new Button();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            sourceFile3TextBox = new TextBox();
+            sourceFile3BrowseButton = new Button();
             SuspendLayout();
             // 
             // sourceFile1TextBox
@@ -52,14 +54,14 @@
             // 
             // sourceFile2TextBox
             // 
-            sourceFile2TextBox.Location = new Point(54, 86);
+            sourceFile2TextBox.Location = new Point(54, 83);
             sourceFile2TextBox.Name = "sourceFile2TextBox";
             sourceFile2TextBox.Size = new Size(212, 23);
             sourceFile2TextBox.TabIndex = 1;
             // 
             // workFileTextBox
             // 
-            workFileTextBox.Location = new Point(54, 115);
+            workFileTextBox.Location = new Point(54, 153);
             workFileTextBox.Name = "workFileTextBox";
             workFileTextBox.Size = new Size(212, 23);
             workFileTextBox.TabIndex = 2;
@@ -76,7 +78,7 @@
             // 
             // sourceFile2BrowseButton
             // 
-            sourceFile2BrowseButton.Location = new Point(278, 86);
+            sourceFile2BrowseButton.Location = new Point(278, 83);
             sourceFile2BrowseButton.Name = "sourceFile2BrowseButton";
             sourceFile2BrowseButton.Size = new Size(178, 23);
             sourceFile2BrowseButton.TabIndex = 4;
@@ -86,7 +88,7 @@
             // 
             // workFileBrowseButton
             // 
-            workFileBrowseButton.Location = new Point(278, 115);
+            workFileBrowseButton.Location = new Point(278, 153);
             workFileBrowseButton.Name = "workFileBrowseButton";
             workFileBrowseButton.Size = new Size(178, 23);
             workFileBrowseButton.TabIndex = 5;
@@ -102,7 +104,7 @@
             // 
             compareAndExportButton.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             compareAndExportButton.ForeColor = SystemColors.HotTrack;
-            compareAndExportButton.Location = new Point(53, 154);
+            compareAndExportButton.Location = new Point(53, 217);
             compareAndExportButton.Name = "compareAndExportButton";
             compareAndExportButton.Size = new Size(213, 29);
             compareAndExportButton.TabIndex = 6;
@@ -125,7 +127,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Consolas", 6F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(391, 202);
+            label2.Location = new Point(391, 249);
             label2.Name = "label2";
             label2.Size = new Size(65, 9);
             label2.TabIndex = 8;
@@ -135,7 +137,7 @@
             // 
             exportFilteredOnlyButton.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             exportFilteredOnlyButton.ForeColor = Color.SeaGreen;
-            exportFilteredOnlyButton.Location = new Point(278, 154);
+            exportFilteredOnlyButton.Location = new Point(278, 217);
             exportFilteredOnlyButton.Name = "exportFilteredOnlyButton";
             exportFilteredOnlyButton.Size = new Size(178, 29);
             exportFilteredOnlyButton.TabIndex = 9;
@@ -143,11 +145,30 @@
             exportFilteredOnlyButton.UseVisualStyleBackColor = true;
             exportFilteredOnlyButton.Click += exportFilteredOnlyButton_Click;
             // 
+            // sourceFile3TextBox
+            // 
+            sourceFile3TextBox.Location = new Point(54, 112);
+            sourceFile3TextBox.Name = "sourceFile3TextBox";
+            sourceFile3TextBox.Size = new Size(212, 23);
+            sourceFile3TextBox.TabIndex = 10;
+            // 
+            // sourceFile3BrowseButton
+            // 
+            sourceFile3BrowseButton.Location = new Point(278, 112);
+            sourceFile3BrowseButton.Name = "sourceFile3BrowseButton";
+            sourceFile3BrowseButton.Size = new Size(178, 23);
+            sourceFile3BrowseButton.TabIndex = 11;
+            sourceFile3BrowseButton.Text = "Load First Term File";
+            sourceFile3BrowseButton.UseVisualStyleBackColor = true;
+            sourceFile3BrowseButton.Click += sourceFile3BrowseButton_Click;
+            // 
             // excelsiorForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(515, 220);
+            ClientSize = new Size(515, 267);
+            Controls.Add(sourceFile3BrowseButton);
+            Controls.Add(sourceFile3TextBox);
             Controls.Add(exportFilteredOnlyButton);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -180,5 +201,7 @@
         private Label label2;
         private Button exportFilteredOnlyButton;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private TextBox sourceFile3TextBox;
+        private Button sourceFile3BrowseButton;
     }
 }

@@ -44,6 +44,22 @@ namespace Excelsior
             }
         }
 
+        // Button click event handler for selecting Source File 3
+        private void sourceFile3BrowseButton_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All Files (*.*)|*.*"; // Set the desired file filter
+                openFileDialog.Title = "Select Source File 3"; // Set the dialog title
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    sourceFile3TextBox.Text = openFileDialog.FileName; // Set the selected file path to the TextBox
+                }
+            }
+        }
+
+
         // Button click event handler for selecting Work File
         private void workFileBrowseButton_Click(object sender, EventArgs e)
         {
@@ -60,6 +76,7 @@ namespace Excelsior
         }
 
         // Button click event handler for performing comparison and export
+        // Button click event handler for performing comparison and export
         private void compareAndExportButton_Click(object sender, EventArgs e)
         {
             try
@@ -67,11 +84,13 @@ namespace Excelsior
                 // Get the paths of the source files and work file
                 string sourceFile1Path = sourceFile1TextBox.Text;
                 string sourceFile2Path = sourceFile2TextBox.Text;
+                string sourceFile3Path = sourceFile3TextBox.Text; // New Source File 3
                 string workFilePath = workFileTextBox.Text;
 
                 // Load the source files and work file into DataTables
                 DataTable sourceFile1Data = LoadExcelFile(sourceFile1Path);
                 DataTable sourceFile2Data = LoadExcelFile(sourceFile2Path);
+                DataTable sourceFile3Data = LoadExcelFile(sourceFile3Path); // New Source File 3
                 DataTable workFileData = LoadExcelFile(workFilePath);
 
                 // Add the "Found In" column to the work file if it doesn't exist
@@ -92,6 +111,10 @@ namespace Excelsior
                     {
                         row["Found In"] = "2. Pending File";
                     }
+                    else if (ContainsKey(sourceFile3Data, "Student ID", key)) // Check Source File 3
+                    {
+                        row["Found In"] = "3. Freshman"; // Update "Found In" column with "3. Freshman"
+                    }
                     else
                     {
                         row["Found In"] = "0. New Verification";
@@ -108,6 +131,7 @@ namespace Excelsior
                 MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         // Helper method to add a column to a DataTable if it doesn't exist
         private void AddColumnIfNotExists(DataTable dataTable, string columnName, Type columnType, string insertAfterColumn = null)
@@ -126,6 +150,7 @@ namespace Excelsior
         }
 
         // Button click event handler for exporting filtered data
+        // Button click event handler for exporting filtered data
         private void exportFilteredOnlyButton_Click(object sender, EventArgs e)
         {
             try
@@ -133,11 +158,13 @@ namespace Excelsior
                 // Get the paths of the source files and work file
                 string sourceFile1Path = sourceFile1TextBox.Text;
                 string sourceFile2Path = sourceFile2TextBox.Text;
+                string sourceFile3Path = sourceFile3TextBox.Text;
                 string workFilePath = workFileTextBox.Text;
 
                 // Load the source files and work file into DataTables
                 DataTable sourceFile1Data = LoadExcelFile(sourceFile1Path);
                 DataTable sourceFile2Data = LoadExcelFile(sourceFile2Path);
+                DataTable sourceFile3Data = LoadExcelFile(sourceFile3Path);
                 DataTable workFileData = LoadExcelFile(workFilePath);
 
                 // Create a new DataTable to store the filtered data
@@ -151,6 +178,15 @@ namespace Excelsior
                     if (!ContainsKey(sourceFile1Data, "Student ID", key) && !ContainsKey(sourceFile2Data, "Student ID", key))
                     {
                         filteredData.ImportRow(row);
+
+                        // Check if the student ID is found in Source File 3
+                        if (ContainsKey(sourceFile3Data, "Student ID", key))
+                        {
+                            // Update "Student Type" and "MEETS or FAILS CREDIT-REQUIREM" columns
+                            DataRow filteredRow = filteredData.Rows[filteredData.Rows.Count - 1];
+                            filteredRow["Student Type"] = "6-First Term Freshman";
+                            filteredRow["MEETS or FAILS CREDIT-REQUIREM"] = "1-Meets first-term freshman credit requirements";
+                        }
                     }
                 }
 
@@ -164,6 +200,7 @@ namespace Excelsior
                 MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         // Helper method to load an Excel file into a DataTable
         private DataTable LoadExcelFile(string filePath)
@@ -245,4 +282,4 @@ namespace Excelsior
     }
 }
 
-// Avijit Roy, July 18, 2023
+// Avijit Roy, July 20, 2023
